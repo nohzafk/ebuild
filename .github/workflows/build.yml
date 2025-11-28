@@ -9,6 +9,14 @@ jobs:
   build:
     runs-on: macos-15
     steps:
+      - name: Uninstall Homebrew
+        run: |
+          curl -O https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh
+          sudo chmod +x uninstall.sh
+          sudo env NONINTERACTIVE=1 ./uninstall.sh
+          sudo rm -rf /opt/homebrew
+          export PATH=''
+          eval '$(/usr/libexec/path_helper -s)'
       - name: Install GNU M4
         run: |
           curl -O https://ftp.gnu.org/gnu/m4/m4-1.4.20.tar.gz
