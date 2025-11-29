@@ -138,6 +138,7 @@ jobs:
                       --without-all                                              \
                       --with-gmp                                                 \
                       --with-gnutls                                              \
+                      --with-modules                                             \
                       --with-mps                                                 \
                       --with-native-image-api                                    \
                       --with-ns                                                  \
