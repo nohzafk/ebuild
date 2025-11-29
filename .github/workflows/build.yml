@@ -54,16 +54,16 @@ jobs:
           tar -zxf texinfo-7.2.tar.gz && cd texinfo-7.2
           ./configure && make -j4
           sudo make install
-      - name: Install GNU Libunistring
-        run: |
-          curl -O https://ftp.gnu.org/gnu/libunistring/libunistring-1.4.1.tar.gz
-          tar -zxf libunistring-1.4.1.tar.gz && cd libunistring-1.4.1
-          ./configure --disable-shared && make -j4
-          sudo make install
       - name: Install GNU Libiconv
         run: |
           curl -O https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz
           tar -zxf libiconv-1.18.tar.gz && cd libiconv-1.18
+          ./configure --disable-shared && make -j4
+          sudo make install
+      - name: Install GNU Libunistring
+        run: |
+          curl -O https://ftp.gnu.org/gnu/libunistring/libunistring-1.4.1.tar.gz
+          tar -zxf libunistring-1.4.1.tar.gz && cd libunistring-1.4.1
           ./configure --disable-shared && make -j4
           sudo make install
       - name: Install GNU Gettext
@@ -120,28 +120,10 @@ jobs:
           tar -zxf nettle-3.10.2.tar.gz && cd nettle-3.10.2
           ./configure --disable-shared && make -j4
           sudo make install
-      - name: Install GNU Libtasn1
-        run: |
-          curl -O https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz
-          tar -zxf libtasn1-4.20.0.tar.gz && cd libtasn1-4.20.0
-          ./configure --disable-shared && make -j4
-          sudo make install
-      - name: Install P11-kit
-        run: |
-          curl -LO https://github.com/p11-glue/p11-kit/releases/download/0.25.10/p11-kit-0.25.10.tar.xz
-          tar -Jxf p11-kit-0.25.10.tar.xz && cd p11-kit-0.25.10
-          ./configure --disable-shared --without-trust-paths && make -j4
-          sudo make install
       - name: Install Libidn2
         run: |
           curl -O https://ftp.gnu.org/gnu/libidn/libidn2-2.3.8.tar.gz
           tar -zxf libidn2-2.3.8.tar.gz && cd libidn2-2.3.8
-          ./configure --disable-shared && make -j4
-          sudo make install
-      - name: Install Libunbound
-        run: |
-          curl -O https://nlnetlabs.nl/downloads/unbound/unbound-1.24.2.tar.gz
-          tar -zxf unbound-1.24.2.tar.gz && cd unbound-1.24.2
           ./configure --disable-shared && make -j4
           sudo make install
       - name: Install Gnutls
