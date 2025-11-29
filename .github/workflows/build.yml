@@ -120,6 +120,7 @@ jobs:
           tar -zxf v0.25.10.tar.gz && cd tree-sitter-0.25.10
           make -j4
           sudo make install
+          sudo find /usr/local/lib -name 'libtree-sitter*.dylib' -delete
       - name: Install Emacs
         run: |
           git clone -b 'feature/igc' --depth 1 https://github.com/emacs-mirror/emacs.git
@@ -139,8 +140,10 @@ jobs:
                       --with-xml2                                                \
                       --with-zlib
           make -j4 && make install
-          tar -Jcf emacs-igc-static-mach-arm64.tar.xz nextstep/Emacs.app
+          ditto nextstep/Emacs.app Emacs.app
+          echo version=$(Emacs.app/Contents/MacOS/Emacs --version | sed -nE 's/^GNU Emacs ([0-9.]+).*/\1/p') >> $GITHUB_ENV
+          tar -Jcf Emacs.tar.xz Emacs.app
       - uses: actions/upload-artifact@v4
         with:
-          name: emacs-build
-          path: emacs/emacs-igc-static-mach-arm64.tar.xz
+          name: Emacs-${{ env.version }}
+          path: emacs/Emacs.tar.xz
