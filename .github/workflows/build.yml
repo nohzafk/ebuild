@@ -112,7 +112,7 @@ jobs:
         run: |
           curl -O https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.11.tar.xz
           tar -Jxf gnutls-3.8.11.tar.xz && cd gnutls-3.8.11
-          ./configure --disable-shared --with-included-libtasn1 && make -j4
+          ./configure --disable-shared --with-included-libtasn1 --without-p11-kit && make -j4
           sudo make install
       - name: Install Libtreesitter
         run: |
