@@ -152,11 +152,6 @@ jobs:
           ditto nextstep/Emacs.app Emacs.app
           echo version=$(Emacs.app/Contents/MacOS/Emacs --version | sed -nE 's/^GNU Emacs ([0-9.]+).*/\1/p') >> $GITHUB_ENV
           tar -Jcf Emacs.tar.xz Emacs.app
-      - name: Upload Emacs
-        uses: actions/upload-artifact@v4
-        with:
-          name: Emacs-${{ env.version }}
-          path: emacs/Emacs.tar.xz
       - name: Build Emacs with MPS
         run: |
           git clone -b 'feature/igc' --depth 1 https://github.com/emacs-mirror/emacs.git emacs-igc
@@ -182,6 +177,11 @@ jobs:
           ditto nextstep/Emacs.app Emacs.app
           echo igc_version=$(Emacs.app/Contents/MacOS/Emacs --version | sed -nE 's/^GNU Emacs ([0-9.]+).*/\1/p') >> $GITHUB_ENV
           tar -Jcf Emacs-MPS.tar.xz Emacs.app
+      - name: Upload Emacs
+        uses: actions/upload-artifact@v4
+        with:
+          name: Emacs-${{ env.version }}
+          path: emacs/Emacs.tar.xz
       - name: Upload Emacs with MPS
         uses: actions/upload-artifact@v4
         with:
