@@ -2,8 +2,6 @@ name: MacOS Build for GNU Emacs
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   build:
@@ -130,8 +128,16 @@ jobs:
           sudo make install
       - name: Build Emacs
         run: |
-          git clone --depth 1 https://github.com/emacs-mirror/emacs.git
-          cd emacs && sed -i '' '/darwin/ s/lncurses/lncursesw/g' configure.ac
+          curl -LO https://ftpmirror.gnu.org/gnu/emacs/emacs-30.2.tar.xz
+          tar -Jxf emacs-30.2.tar.xz && cd emacs-30.2
+          # Apply emacs-plus patches
+          curl -LO https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch
+          curl -LO https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/system-appearance.patch
+          curl -LO https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/round-undecorated-frame.patch
+          patch -p1 < fix-window-role.patch
+          patch -p1 < system-appearance.patch
+          patch -p1 < round-undecorated-frame.patch
+          sed -i '' '/darwin/ s/lncurses/lncursesw/g' configure.ac
           ./autogen.sh && ./configure CFLAGS='-g0 -O2 -flto=thin'      \
                                       PKG_CONFIG='pkg-config -static'  \
                                       --disable-gc-mark-trace          \
@@ -150,40 +156,9 @@ jobs:
                                       --with-zlib
           make -j4 && make install
           ditto nextstep/Emacs.app Emacs.app
-          echo version=$(Emacs.app/Contents/MacOS/Emacs --version | sed -nE 's/^GNU Emacs ([0-9.]+).*/\1/p') >> $GITHUB_ENV
-          tar -Jcf Emacs.tar.xz Emacs.app
-      - name: Build Emacs with MPS
-        run: |
-          git clone -b 'feature/igc' --depth 1 https://github.com/emacs-mirror/emacs.git emacs-igc
-          cd emacs-igc && sed -i '' '/darwin/ s/lncurses/lncursesw/g' configure.ac
-          ./autogen.sh && ./configure CFLAGS='-g0 -O2 -flto=thin'      \
-                                      PKG_CONFIG='pkg-config -static'  \
-                                      --disable-gc-mark-trace          \
-                                      --without-all                    \
-                                      --with-compress-install          \
-                                      --with-gmp                       \
-                                      --with-gnutls                    \
-                                      --with-modules                   \
-                                      --with-mps                       \
-                                      --with-native-image-api          \
-                                      --with-ns                        \
-                                      --with-small-ja-dic              \
-                                      --with-threads                   \
-                                      --with-toolkit-scroll-bars       \
-                                      --with-tree-sitter               \
-                                      --with-xml2                      \
-                                      --with-zlib
-          make -j4 && make install
-          ditto nextstep/Emacs.app Emacs.app
-          echo igc_version=$(Emacs.app/Contents/MacOS/Emacs --version | sed -nE 's/^GNU Emacs ([0-9.]+).*/\1/p') >> $GITHUB_ENV
-          tar -Jcf Emacs-MPS.tar.xz Emacs.app
+          tar -Jcf Emacs-30.2.tar.xz Emacs.app
       - name: Upload Emacs
         uses: actions/upload-artifact@v4
         with:
-          name: Emacs-${{ env.version }}
-          path: emacs/Emacs.tar.xz
-      - name: Upload Emacs with MPS
-        uses: actions/upload-artifact@v4
-        with:
-          name: Emacs-MPS-${{ env.igc_version }}
-          path: emacs-igc/Emacs-MPS.tar.xz
+          name: Emacs-30.2
+          path: emacs-30.2/Emacs-30.2.tar.xz
