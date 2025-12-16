@@ -27,6 +27,16 @@ Emacs is built with:
 - Native Image API
 - Dynamic modules support
 
+## Installation
+
+After downloading and extracting the artifact, remove the quarantine attribute:
+
+```bash
+xattr -cr Emacs.app
+```
+
+Then move to `/Applications` or wherever you prefer.
+
 > [!Note]
 > Native compilation is not supported, since compiling libgccjit is
 > considered too resource-intensive.
