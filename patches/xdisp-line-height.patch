@@ -1,0 +1,22 @@
+Reduce GUI line height by scaling ascent/descent by 0.86 in gui_produce_glyphs().
+
+This allows GUI Emacs line height to approximate a terminal emulator's
+line-height setting of 0.86, producing tighter line spacing.
+
+--- a/src/xdisp.c
++++ b/src/xdisp.c
+@@ -33371,10 +33371,10 @@
+ 	it->max_extra_line_spacing = extra_line_spacing;
+     }
+
+-  it->max_ascent = max (it->max_ascent, it->ascent);
+-  it->max_descent = max (it->max_descent, it->descent);
+-  it->max_phys_ascent = max (it->max_phys_ascent, it->phys_ascent);
+-  it->max_phys_descent = max (it->max_phys_descent, it->phys_descent);
++  it->max_ascent = max (it->max_ascent, (int)(it->ascent * 0.86));
++  it->max_descent = max (it->max_descent, (int)(it->descent * 0.86));
++  it->max_phys_ascent = max (it->max_phys_ascent, (int)(it->phys_ascent * 0.86));
++  it->max_phys_descent = max (it->max_phys_descent, (int)(it->phys_descent * 0.86));
+ }
+
+ /* EXPORT for RIF:
