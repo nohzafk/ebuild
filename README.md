@@ -30,6 +30,10 @@ Emacs is built with:
 - Native Image API
 - Dynamic modules support
 
+> [!Note]
+> Native compilation is not supported, since compiling libgccjit is
+> considered too resource-intensive.
+
 ## Installation
 
 After downloading and extracting the artifact, remove the quarantine attribute:
@@ -49,6 +53,3 @@ only includes `/usr/local/share/terminfo` (the install prefix), which does not
 exist on end-user machines and causes "Cannot open terminfo database file"
 errors in terminal mode.
 
-> [!Note]
-> Native compilation is not supported, since compiling libgccjit is
-> considered too resource-intensive.
