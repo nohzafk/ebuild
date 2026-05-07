@@ -79,7 +79,9 @@ jobs:
         run: |
           curl -LO https://ftpmirror.gnu.org/gnu/ncurses/ncurses-6.6.tar.gz
           tar -zxf ncurses-6.6.tar.gz && cd ncurses-6.6
-          ./configure --disable-shared && make -j4
+          ./configure --disable-shared \
+                     --with-terminfo-dirs=/usr/share/terminfo:/usr/local/share/terminfo \
+            && make -j4
           sudo make install
           sudo ln -s /usr/local/include/ncursesw/curses.h /usr/local/include/ncurses.h
       - name: Install Zlib
@@ -164,6 +166,10 @@ jobs:
           make install
           ditto nextstep/Emacs.app Emacs.app
           tar -Jcf Emacs-30.2.tar.xz Emacs.app
+      - name: Update release tag
+        run: |
+          git tag -f v30.2
+          git push origin v30.2 --force
       - name: Release Emacs
         uses: softprops/action-gh-release@v2
         with:

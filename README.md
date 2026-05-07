@@ -40,6 +40,15 @@ xattr -cr Emacs.app
 
 Then move to `/Applications` or wherever you prefer.
 
+## macOS Terminfo
+
+ncurses is built with `--with-terminfo-dirs=/usr/share/terminfo:/usr/local/share/terminfo`
+so that `emacs -nw` and `emacsclient -t` can find macOS's system terminfo
+database at `/usr/share/terminfo`. Without this, the compiled-in search path
+only includes `/usr/local/share/terminfo` (the install prefix), which does not
+exist on end-user machines and causes "Cannot open terminfo database file"
+errors in terminal mode.
+
 > [!Note]
 > Native compilation is not supported, since compiling libgccjit is
 > considered too resource-intensive.
