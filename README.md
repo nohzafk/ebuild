@@ -1,4 +1,4 @@
-[![MacOS Build for GNU Emacs](https://github.com/RadioNoiseE/ebuild/actions/workflows/build.yml/badge.svg)](https://github.com/RadioNoiseE/ebuild/actions/workflows/build.yml)
+[![MacOS Build for GNU Emacs](https://github.com/nohzafk/ebuild/actions/workflows/build.yml/badge.svg)](https://github.com/nohzafk/ebuild/actions/workflows/build.yml)
 
 This repository builds GNU Emacs 30.2 for macOS with static linking and
 emacs-plus patches. Base on the work of upstream [ebuild](https://github.com/RadioNoiseE/ebuild)
