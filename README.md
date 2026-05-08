@@ -17,6 +17,11 @@ The following patches from [emacs-plus](https://github.com/d12frosted/homebrew-e
 - **fix-window-role** - Fixes accessibility window role for better screen reader support
 - **system-appearance** - Adds `ns-system-appearance-change-functions` hook for dark/light mode detection
 - **round-undecorated-frame** - Enables rounded corners on undecorated frames
+- **fix-ns-x-colors** - Refreshes `x-colors` at NS window-system init so the full color list (~800) is available, not the headless-dump subset (~62)
+
+A local patch in `patches/` is also applied:
+
+- **no-frame-refocus-cocoa** - Stops `delete-frame` from yanking focus to another Emacs frame on macOS. Adapted from the emacs-plus emacs-28/29 patch; the equivalent block was refactored upstream in emacs-30 (`Fraise_frame` → `ns_make_frame_key_window`), so emacs-plus does not ship a 30 version.
 
 ## Features
 

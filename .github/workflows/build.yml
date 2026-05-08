@@ -141,9 +141,14 @@ jobs:
           curl -LO https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch
           curl -LO https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/system-appearance.patch
           curl -LO https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/round-undecorated-frame.patch
+          curl -LO https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-30/fix-ns-x-colors.patch
           patch -p1 < fix-window-role.patch
           patch -p1 < system-appearance.patch
           patch -p1 < round-undecorated-frame.patch
+          patch -p1 < fix-ns-x-colors.patch
+          # Local patch: drop NS focus-stealing on frame deletion (no upstream
+          # emacs-30 equivalent; emacs-plus only ships this for emacs-28/29).
+          patch -p1 < ../patches/no-frame-refocus-cocoa.patch
           sed -i '' '/darwin/ s/lncurses/lncursesw/g' configure.ac
           ./autogen.sh && ./configure CFLAGS='-O2 -g0 -flto=thin'     \
                                       PKG_CONFIG='pkgconf -static'    \
