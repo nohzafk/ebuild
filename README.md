@@ -39,6 +39,18 @@ Emacs is built with:
 > Native compilation is not supported, since compiling libgccjit is
 > considered too resource-intensive.
 
+## Local build
+
+`scripts/build.sh` mirrors the CI workflow but installs every dependency into a local prefix (`build/prefix/`) instead of `/usr/local`, so it does not touch the system or your Homebrew install.
+
+```bash
+./scripts/build.sh                # build everything; output in build/Emacs.app
+./scripts/build.sh emacs          # rebuild only Emacs (deps already done)
+PREFIX=/tmp/foo ./scripts/build.sh
+```
+
+The script is resumable — each stage has a sentinel file in the prefix and is skipped if already built. After a transient failure (e.g. flaky GNU mirror) just rerun.
+
 ## Installation
 
 After downloading and extracting the artifact, remove the quarantine attribute:
